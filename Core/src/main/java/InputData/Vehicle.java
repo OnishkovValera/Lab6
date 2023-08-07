@@ -1,4 +1,4 @@
 package InputData;
 
-public class Vehicle {
+public class Vehicle{
 }
