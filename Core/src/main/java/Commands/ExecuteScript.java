@@ -1,6 +1,10 @@
 package Commands;
 
-public class ExecuteScript{
+import Managers.Container;
 
-
+public class ExecuteScript implements Command{
+    @Override
+    public Container execute(Container container) {
+        return null;
+    }
 }

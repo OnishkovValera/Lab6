@@ -1,4 +1,10 @@
 package Commands;
 
-public class Exit {
+import Managers.Container;
+
+public class Exit implements Command{
+    @Override
+    public Container execute(Container container) {
+        return null;
+    }
 }

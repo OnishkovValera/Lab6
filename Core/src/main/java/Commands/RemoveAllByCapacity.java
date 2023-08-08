@@ -1,4 +1,10 @@
 package Commands;
 
-public class RemoveAllByCapacity {
+import Managers.Container;
+
+public class RemoveAllByCapacity implements Command{
+    @Override
+    public Container execute(Container container) {
+        return null;
+    }
 }

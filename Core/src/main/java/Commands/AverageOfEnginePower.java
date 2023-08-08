@@ -1,5 +1,12 @@
 package Commands;
 
-public class AverageOfEnginePower{
+import Managers.Container;
 
+public class AverageOfEnginePower implements Command{
+
+
+    @Override
+    public Container execute(Container container) {
+        return null;
+    }
 }

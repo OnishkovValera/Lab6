@@ -1,4 +1,11 @@
 package Commands;
 
-public class RemoveGreaterKey {
+import Managers.Container;
+
+public class RemoveGreaterKey implements Command{
+    @Override
+    public Container execute(Container container) {
+        return null;
+    }
+
 }
