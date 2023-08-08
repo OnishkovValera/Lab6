@@ -32,6 +32,7 @@ public class RunClient {
 
             if(container.getCommand().toString().equals("exit")){
                 System.out.println("App is closing");
+                containerHandler.sendContainer(new Container(true));
                 System.exit(1);
 
             }

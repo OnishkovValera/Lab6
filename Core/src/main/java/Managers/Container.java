@@ -4,7 +4,6 @@ import Commands.Command;
 import InputData.Vehicle;
 
 import java.io.Serializable;
-import java.net.ContentHandler;
 import java.util.HashMap;
 
 public class Container implements Serializable {
