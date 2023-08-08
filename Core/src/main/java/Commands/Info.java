@@ -7,4 +7,9 @@ public class Info implements Command{
     public Container execute(Container container) {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "Info";
+    }
 }

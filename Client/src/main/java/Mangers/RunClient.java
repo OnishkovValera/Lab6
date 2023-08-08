@@ -1,44 +1,20 @@
 package Mangers;
 
 import Managers.Container;
+import Managers.ContainerHandler;
 
 import java.io.*;
-import java.nio.channels.SocketChannel;
 import java.util.Scanner;
 
-import static Mangers.ContainerHandler.readContainer;
-import static Mangers.ContainerHandler.sendContainer;
-
 public class RunClient {
-
+    Scanner scn = new Scanner(System.in);
     String env;
 
 
+    public void run(ContainerHandler containerHandler) throws IOException, ClassNotFoundException {
 
-    public void run(SocketChannel socketChannel) throws IOException, ClassNotFoundException {
-        Validator vld = new Validator();
-        Scanner scn = new Scanner(System.in);
+        EnvironmentHandler.setEnvironment();
 
-        while (true) {
-            System.out.println("Enter name of environment variable");
-            System.out.print("$");
-
-            env = scn.nextLine();
-
-            Container container = new Container(true, env);
-            sendContainer(container, socketChannel);
-            container = readContainer(socketChannel);
-
-            if(container.getError()){
-                System.err.println(container.getCommand());
-
-            }else{
-
-                System.out.println(container.getCommand());
-                break;
-
-            }
-        }
         while (true){
 
             System.out.println("Write command");
@@ -46,35 +22,35 @@ public class RunClient {
             Container container = null;
 
             try {
-                container = vld.validateData(scn.nextLine());
+                container = Validator.validateData(scn.nextLine());
             }catch (IllegalArgumentException exception){
                 System.err.println("No such command");
                 continue;
             }
 
-            sendContainer(container, socketChannel);
+            containerHandler.sendContainer(container);
 
-            if(container.getCommand() == "exit"){
+            if(container.getCommand().toString().equals("exit")){
                 System.out.println("App is closing");
                 System.exit(1);
 
             }
 
-            container = readContainer(socketChannel);
+            container = containerHandler.readContainer();
 
-            if(container.getError()){
+            if(container.error){
                 System.err.println(container.getCommand());
                 continue;
 
             }
 
-            if(container.getHashMap() == null){
+            if(container.getHashMap().equals(null)){
                 System.out.println(container.getCommand());
-                continue;
-            }
-
-            for(Integer key : container.getHashMap().keySet()){
-                System.out.println(container.getHashMap().get(key).toString());
+            }else {
+                for (Integer key : container.getHashMap().keySet()) {
+                    System.out.println(container.getHashMap().get(key).toString());
+                }
+                System.out.println(container.getArgument());
             }
         }
     }

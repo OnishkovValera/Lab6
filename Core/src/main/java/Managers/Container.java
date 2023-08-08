@@ -4,6 +4,7 @@ import Commands.Command;
 import InputData.Vehicle;
 
 import java.io.Serializable;
+import java.net.ContentHandler;
 import java.util.HashMap;
 
 public class Container implements Serializable {
@@ -85,14 +86,14 @@ public class Container implements Serializable {
 
 
 
-    public Container(boolean checkEnv, String env) {
-        this.checkEnv = checkEnv;
+    public Container(String env) {
+        this.checkEnv = true;
         this.env = env;
     }
 
-    public Container(boolean setNewVariable, String nameOfVariable, String pathOfVariable) {
+    public Container(String nameOfVariable, String pathOfVariable) {
         this.checkEnv = true;
-        this.setNewVariable = setNewVariable;
+        this.setNewVariable = true;
         this.nameOfVariable = nameOfVariable;
         this.pathOfVariable = pathOfVariable;
     }
@@ -113,9 +114,15 @@ public class Container implements Serializable {
         this.argument = argument;
         this.hashMap = hashMap;
     }
-    public Container(String string){
-        this.error = true;
+    public Container(boolean error, String string){
+        this.error = error;
         this.argument = string;
+    }
+    public Container(boolean error, String argument, HashMap<Integer, Vehicle> hashMap){
+        this.error = error;
+        this.argument = argument;
+        this.hashMap = hashMap;
+
     }
 
 }

@@ -7,4 +7,9 @@ public class ExecuteScript implements Command{
     public Container execute(Container container) {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "ExecuteScript";
+    }
 }

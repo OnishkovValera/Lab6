@@ -11,33 +11,26 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Validator {
-    public static boolean isCommandExist(String command){
-        return false;
-    }
 
-    public Container validateData(String command) throws IllegalArgumentException{
-
+    public static Container validateData(String command) throws IllegalArgumentException{
         String[] commandAndArgument = command.toLowerCase().trim().split(" ");
         Container container = null;
         if (CommandManager.isArgumentExists(commandAndArgument[0].trim())) {
             if (CommandManager.isElementNeeded(commandAndArgument[0].trim())){
                 HashMap<Integer, Vehicle> hashMap = new HashMap<>();
                 hashMap.put(0, createVehicle());
-                container = new Container(commandAndArgument[0], commandAndArgument[1], hashMap);
+                container = new Container(CommandManager.getCommand(commandAndArgument[0]), commandAndArgument[1], hashMap);
 
             }else{
-                container = new Container(commandAndArgument[1], commandAndArgument[0]);
+                container = new Container(CommandManager.getCommand(commandAndArgument[1]), commandAndArgument[0]);
 
             }
         }else{
-            container = new Container(commandAndArgument[0]);
+            container = new Container(CommandManager.getCommand(commandAndArgument[0]));
 
         }
         return container;
     }
-
-
-
 
     public static Vehicle createVehicle(){
 
@@ -47,6 +40,7 @@ public class Validator {
         name = scn.nextLine();
 
         float x;
+
 
         while(true) {
             try {
