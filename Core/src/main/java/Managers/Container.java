@@ -1,35 +1,65 @@
 package Managers;
 
+import Commands.Command;
 import InputData.Vehicle;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
 public class Container implements Serializable {
-    private boolean chekEnv;
 
-    private boolean error;
+    public boolean checkEnv = false;
+    public boolean setNewVariable = false;
+    public boolean endConnection = false;
+    public boolean error = false;
 
+
+
+
+
+
+    private String env;
+    private String nameOfVariable;
+    private String pathOfVariable;
+    private Command command;
+    private String argument;
     private HashMap<Integer, Vehicle> hashMap;
 
-    private String command;
 
-    private String argument;
 
-    public boolean getChekEnv() {
-        return chekEnv;
+
+
+
+    public String getEnv() {
+        return env;
     }
 
-    public void setChekEnv(boolean chekEnv) {
-        this.chekEnv = chekEnv;
+    public void setEnv(String env) {
+        this.env = env;
     }
 
-    public boolean getError() {
-        return error;
+    public String getNameOfVariable() {
+        return nameOfVariable;
     }
 
-    public void setError(boolean error) {
-        this.error = error;
+    public void setNameOfVariable(String nameOfVariable) {
+        this.nameOfVariable = nameOfVariable;
+    }
+
+    public String getPathOfVariable() {
+        return pathOfVariable;
+    }
+
+    public void setPathOfVariable(String pathOfVariable) {
+        this.pathOfVariable = pathOfVariable;
+    }
+
+    public Command getCommand() {
+        return command;
+    }
+
+    public void setCommand(Command command) {
+        this.command = command;
     }
 
     public HashMap<Integer, Vehicle> getHashMap() {
@@ -38,14 +68,6 @@ public class Container implements Serializable {
 
     public void setHashMap(HashMap<Integer, Vehicle> hashMap) {
         this.hashMap = hashMap;
-    }
-
-    public String getCommand() {
-        return command;
-    }
-
-    public void setCommand(String command) {
-        this.command = command;
     }
 
     public String getArgument() {
@@ -57,37 +79,43 @@ public class Container implements Serializable {
     }
 
 
-    public Container(boolean chekEnv, boolean error, HashMap<Integer, Vehicle> hashMap, String command, String argument) {
-        this.chekEnv = chekEnv;
-        this.error = error;
+
+
+
+
+
+
+    public Container(boolean checkEnv, String env) {
+        this.checkEnv = checkEnv;
+        this.env = env;
+    }
+
+    public Container(boolean setNewVariable, String nameOfVariable, String pathOfVariable) {
+        this.checkEnv = true;
+        this.setNewVariable = setNewVariable;
+        this.nameOfVariable = nameOfVariable;
+        this.pathOfVariable = pathOfVariable;
+    }
+    public Container(boolean endConnection){
+        this.endConnection = endConnection;
+    }
+
+    public Container(Command command){
+        this.command = command;
+    }
+
+    public Container(Command command, String argument){
+        this.command = command;
+        this.argument = argument;
+    }
+    public Container(Command command, String argument, HashMap<Integer, Vehicle> hashMap){
+        this.command = command;
+        this.argument = argument;
         this.hashMap = hashMap;
-        this.command = command;
-        this.argument = argument;
     }
-
-    public Container(boolean chekEnv, String command) {
-        this.chekEnv = chekEnv;
-        this.command = command;
-    }
-
-    public Container(String command, boolean error) {
-        this.error = error;
-        this.command = command;
-    }
-
-    public Container(String command){
-        this.command = command;
-    }
-
-    public Container(String command, String argument){
-        this.command = command;
-        this.argument = argument;
-    }
-
-    public Container(String command, String argument, HashMap<Integer, Vehicle> hashMap){
-        this.command = command;
-        this.argument = argument;
-        this.hashMap = hashMap;
+    public Container(String string){
+        this.error = true;
+        this.argument = string;
     }
 
 }
