@@ -11,5 +11,6 @@ public class Main {
         EnvironmentHandler.setContainerHandler(containerHandler);
         RunClient client = new RunClient();
         client.run(containerHandler);
+
     }
 }

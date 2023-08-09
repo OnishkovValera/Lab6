@@ -7,8 +7,8 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 
 public class Connection {
-    private ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
-    private Selector selector = Selector.open();
+    private ServerSocketChannel serverSocketChannel;
+    private Selector selector;
 
     public Connection(int port) throws IOException {
         serverSoketInitialization(port);
@@ -19,12 +19,12 @@ public class Connection {
         serverSocketChannel = ServerSocketChannel.open();
         serverSocketChannel.configureBlocking(false);
 
-        InetSocketAddress serverPort = new InetSocketAddress(8080);
+        InetSocketAddress serverPort = new InetSocketAddress(port);
         serverSocketChannel.bind(serverPort);
     }
 
     public Selector selectorInitialization() throws IOException {
-        Selector selector = Selector.open();
+        selector = Selector.open();
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
         return selector;
     }

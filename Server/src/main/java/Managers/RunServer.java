@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class RunServer {
     public void run(Selector selector, ServerSocketChannel serverSocketChannel) throws IOException, ClassNotFoundException {
-        MessageHandler messageHandler = new MessageHandler();
+        MessageHandler messageHandler = new MessageHandler(selector);
 
         while (true){
             selector.select();
@@ -30,7 +30,6 @@ public class RunServer {
 
                 if(handlingKey.isReadable()){
                     messageHandler.handleMessage((SocketChannel) handlingKey.channel());
-
                 }
 
                 if(!handlingKey.isConnectable()){
@@ -40,6 +39,7 @@ public class RunServer {
                 iter.remove();
 
             }
+
         }
     }
 }
