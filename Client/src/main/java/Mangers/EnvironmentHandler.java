@@ -35,7 +35,7 @@ public class EnvironmentHandler {
 
                 String answer = scn.nextLine().trim().toLowerCase();
 
-                if(answer.equals("Y")){
+                if(answer.equals("y")){
                     System.out.println("Enter path for this variable");
                     System.out.print("$");
                     String path = scn.nextLine();

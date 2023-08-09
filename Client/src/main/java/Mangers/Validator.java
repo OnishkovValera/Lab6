@@ -35,68 +35,82 @@ public class Validator {
     public static Vehicle createVehicle(){
 
         Scanner scn = new Scanner(System.in);
-
         String name;
-        name = scn.nextLine();
+        while(true) {
+            System.out.print("Enter name\n$" );
+            name = scn.nextLine().trim();
+            if(!(name.length() <= 0 & name.equals(null))){
+                break;
+            }else{
+                System.err.println("Name mustn't be null or empty");
+            }
+        }
 
         float x;
-
-
         while(true) {
+            System.out.print("Enter coordinate x\n$");
             try {
                 x = scn.nextFloat();
                 break;
 
             } catch (InputMismatchException exception) {
                 System.err.println("Coordinate x must be float");
-                System.out.print("$");
 
             }
         }
 
         double y;
         while(true) {
+            System.out.print("Enter coordinate y\n$");
             try {
                 y = scn.nextDouble();
                 break;
 
             } catch (InputMismatchException exception) {
                 System.err.println("Coordinate y must be double");
-                System.out.print("$");
+
             }
         }
 
         int enginePower;
         while(true) {
+            System.out.println("Enter engin power\n$");
             try {
                 enginePower = scn.nextInt();
-                break;
-
+                if(enginePower > 0) {
+                    break;
+                }else{
+                    System.err.println("Engine power must be bigger than zero");
+                }
             } catch (InputMismatchException exception) {
                 System.err.println("Engine power must be integer");
-                System.out.print("$");
+
             }
         }
 
         double capacity;
         while(true) {
+            System.out.print("Enter capacity \n$");
             try {
                 capacity = scn.nextDouble();
-                break;
+                if(capacity > 0) {
+                    break;
+                }else{
+                    System.err.println("Capacity must be bigger that zero");
+                }
             } catch (InputMismatchException exception) {
                 System.err.println("Capacity must be double");
-                System.out.print("$");
             }
         }
 
         VehicleType type;
         while(true) {
+            System.out.println("Enter vehicle type\n$");
             try {
                 type = VehicleType.valueOf(scn.nextLine().toUpperCase());
                 break;
             } catch (IllegalArgumentException exception) {
                 System.err.println("No such type");
-                System.out.print("$");
             }
         }
 
@@ -106,8 +120,7 @@ public class Validator {
                 fuelType = FuelType.valueOf(scn.nextLine().toUpperCase());
                 break;
             } catch (IllegalArgumentException exception) {
-                System.err.println("No such fuel type");
-                System.out.print("$");
+                System.err.println("No such fuel type\n$");
 
             }
         }
@@ -115,7 +128,5 @@ public class Validator {
         Vehicle vehicle = new Vehicle(name, new Coordinates(x, y), enginePower, capacity, type, fuelType);
 
         return vehicle;
-
     }
-
 }
