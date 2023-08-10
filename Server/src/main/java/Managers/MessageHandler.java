@@ -1,6 +1,7 @@
 package Managers;
 
 import java.io.IOException;
+import java.net.ContentHandler;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
@@ -21,13 +22,13 @@ public class MessageHandler {
         handlingChannel.configureBlocking(false);
         Container container = ContainerHandler.readContainer(handlingChannel);
         if(container.checkEnv){
-            chekEnvironment(container.getEnv(), handlingChannel);
+            checkEnvironment(container.getEnv(), handlingChannel);
         }else if(container.endConnection){
             disconnectClient(handlingChannel);
 
         }else if(container.setNewVariable){
             SessionManager.saveCollection(handlingChannel);
-            chekEnvironment(container.getEnv(), handlingChannel);
+            checkEnvironment(container.getEnv(), handlingChannel);
 
         }else{
             container.getCommand().execute(container);
@@ -39,23 +40,27 @@ public class MessageHandler {
         SessionManager.closeSession(socketChannel);
     }
 
-    public void chekEnvironment(String path, SocketChannel handlingChannel) throws IOException {
-        Path envPath = Path.of(System.getenv(path)).toAbsolutePath();
-        if(Files.exists(envPath)){
-            ContainerHandler.sendContainer(new Container(true, "File isn't exist"), handlingChannel);
+    public void checkEnvironment(String path, SocketChannel handlingChannel) throws IOException {
+        try {
+            Path envPath = Path.of(System.getenv(path));
+            if (Files.exists(envPath)) {
+                ContainerHandler.sendContainer(new Container(true, "File isn't exist"), handlingChannel);
 
 
-        }else if (Files.isDirectory(envPath)) {
-            ContainerHandler.sendContainer(new Container(true, "This is directory"), handlingChannel);
+            } else if (Files.isDirectory(envPath)) {
+                ContainerHandler.sendContainer(new Container(true, "This is directory"), handlingChannel);
 
 
-        } else if(!Files.isReadable(envPath)){
-            ContainerHandler.sendContainer(new Container(true, "File can't be read"), handlingChannel);
+            } else if (!Files.isReadable(envPath)) {
+                ContainerHandler.sendContainer(new Container(true, "File can't be read"), handlingChannel);
 
-        }else{
-            //Инициализировать новую сессию
-            SessionManager.setVariable(handlingChannel, envPath.toString());
-            ContainerHandler.sendContainer(new Container(false, "Success, variable is valid"), handlingChannel);
+            } else {
+                //Инициализировать новую сессию
+                SessionManager.setVariable(handlingChannel, envPath.toString());
+                ContainerHandler.sendContainer(new Container(false, "Success, variable is valid"), handlingChannel);
+            }
+        }catch (NullPointerException exception){
+            ContainerHandler.sendContainer(new Container(true, "No such variable" ), handlingChannel);
         }
     }
 

@@ -32,7 +32,7 @@ public class RunServer {
                     messageHandler.handleMessage((SocketChannel) handlingKey.channel());
                 }
 
-                if(!handlingKey.isConnectable()){
+                if(handlingKey.isConnectable()){
                     messageHandler.disconnectClient((SocketChannel) handlingKey.channel());
                 }
 
