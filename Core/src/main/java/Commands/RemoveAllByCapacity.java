@@ -2,14 +2,10 @@ package Commands;
 
 import Managers.Container;
 
-public class RemoveAllByCapacity implements Command{
+public class RemoveAllByCapacity extends AbstractCommand{
     @Override
     public Container execute(Container container) {
         return null;
     }
 
-    @Override
-    public String toString() {
-        return "RemoveAllByCapacity";
-    }
 }

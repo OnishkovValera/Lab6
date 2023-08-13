@@ -2,15 +2,10 @@ package Commands;
 
 import Managers.Container;
 
-public class Exit implements Command{
+public class Exit extends AbstractCommand{
     @Override
     public Container execute(Container container) {
         return null;
-    }
-
-    @Override
-    public String toString() {
-        return "Exit";
     }
 
 }

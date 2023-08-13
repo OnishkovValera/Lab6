@@ -2,15 +2,10 @@ package Commands;
 
 import Managers.Container;
 
-public class FilterLessThanEnginePower implements Command{
+public class FilterLessThanEnginePower extends AbstractCommand{
     @Override
     public Container execute(Container container) {
         return null;
-    }
-
-    @Override
-    public String toString() {
-        return "FilterLessThanEnginePower";
     }
 
 }

@@ -2,14 +2,10 @@ package Commands;
 
 import Managers.Container;
 
-public class Insert implements Command{
+public class Insert extends AbstractCommand{
     @Override
     public Container execute(Container container) {
         return null;
     }
 
-    @Override
-    public String toString() {
-        return "Insert";
-    }
 }

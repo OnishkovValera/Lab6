@@ -2,16 +2,9 @@ package Commands;
 
 import Managers.Container;
 
-public class RemoveGreater implements Command{
+public class RemoveGreater extends AbstractCommand{
     @Override
     public Container execute(Container container) {
         return null;
     }
-
-    @Override
-    public String toString() {
-        return "RemoveGreater";
-    }
-
-
 }
