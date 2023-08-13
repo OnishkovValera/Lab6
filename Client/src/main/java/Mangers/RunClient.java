@@ -11,7 +11,7 @@ public class RunClient {
     String env;
 
 
-    public void run(ContainerHandler containerHandler) throws IOException, ClassNotFoundException {
+    public void run(ContainerHandler containerHandler) throws IOException, ClassNotFoundException, InterruptedException {
 
         EnvironmentHandler.setEnvironment();
 

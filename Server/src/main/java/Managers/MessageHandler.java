@@ -43,7 +43,7 @@ public class MessageHandler {
     public void checkEnvironment(String path, SocketChannel handlingChannel) throws IOException {
         try {
             Path envPath = Path.of(System.getenv(path));
-            if (Files.exists(envPath)) {
+            if (!Files.exists(envPath)) {
                 ContainerHandler.sendContainer(new Container(true, "File isn't exist"), handlingChannel);
 
 
@@ -57,6 +57,7 @@ public class MessageHandler {
             } else {
                 //Инициализировать новую сессию
                 SessionManager.setVariable(handlingChannel, envPath.toString());
+                System.out.println(envPath.toString());
                 ContainerHandler.sendContainer(new Container(false, "Success, variable is valid"), handlingChannel);
             }
         }catch (NullPointerException exception){

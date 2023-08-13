@@ -2,7 +2,9 @@ package Commands;
 
 import Managers.Container;
 
-public class Show implements Command{
+import java.io.Serializable;
+
+public class Show implements Command, Serializable {
     @Override
     public Container execute(Container container) {
         return null;

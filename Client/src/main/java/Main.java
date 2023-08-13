@@ -6,7 +6,7 @@ import Mangers.RunClient;
 import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         ContainerHandler containerHandler = new ContainerHandler(Connection.connect("localhost", 8080));
         EnvironmentHandler.setContainerHandler(containerHandler);
         RunClient client = new RunClient();

@@ -13,13 +13,12 @@ public class EnvironmentHandler {
         EnvironmentHandler.containerHandler = containerHandler;
     }
 
-    public static void setEnvironment() throws IOException, ClassNotFoundException {
+    public static void setEnvironment() throws IOException, ClassNotFoundException, InterruptedException {
         String env;
         Scanner scn = new Scanner(System.in);
 
         while (true) {
-            System.out.println("Enter name of environment variable");
-            System.out.print("$");
+            System.out.print("Enter name of environment variable\n$");
 
             env = scn.nextLine().trim();
 
@@ -28,16 +27,14 @@ public class EnvironmentHandler {
             container = containerHandler.readContainer();
 
             if(container.error){
-
-                System.err.println(container.getCommand());
-                System.out.println("Do you want to create new environment variable?[Y/N]");
-                System.out.print("$");
+                System.err.println(container.getArgument());
+                Thread.sleep(50);
+                System.out.print("Do you want to create new environment variable?[Y/N]\n$");
 
                 String answer = scn.nextLine().trim().toLowerCase();
 
                 if(answer.equals("y")){
-                    System.out.println("Enter path for this variable");
-                    System.out.print("$");
+                    System.out.print("Enter path for this variable\n$");
                     String path = scn.nextLine();
                     containerHandler.sendContainer(new Container(env, path));
                     container = containerHandler.readContainer();
