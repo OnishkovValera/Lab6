@@ -20,7 +20,6 @@ public abstract class AbstractCommand implements Command, Serializable {
             if(Character.isUpperCase(chr[i])){
                 stringSnakeCase.append(Arrays.copyOfRange(chr, lastAppend, i));
                 stringSnakeCase.append('_');
-
                 lastAppend = i;
 
             }

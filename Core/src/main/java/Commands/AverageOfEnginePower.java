@@ -6,6 +6,6 @@ public class AverageOfEnginePower extends AbstractCommand {
     @Override
     public Container execute(Container container) {
         return null;
-    }
 
+    }
 }

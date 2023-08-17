@@ -13,20 +13,12 @@ public class Container implements Serializable {
     public boolean endConnection = false;
     public boolean error = false;
 
-
-
-
-
-
     private String env;
     private String nameOfVariable;
     private String pathOfVariable;
     private Command command;
     private String argument;
     private HashMap<Integer, Vehicle> hashMap;
-
-
-
 
 
 
@@ -77,12 +69,6 @@ public class Container implements Serializable {
     public void setArgument(String argument) {
         this.argument = argument;
     }
-
-
-
-
-
-
 
 
     public Container(String env) {

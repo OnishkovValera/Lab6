@@ -7,7 +7,18 @@ import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 
 public class SessionManager {
+
+    private static SocketChannel handlingChannel;
+
     public static HashMap<SocketChannel, Session> sessions = new HashMap<>();
+
+    public static SocketChannel getHandlingChannel() {
+        return handlingChannel;
+    }
+
+    public static void setHandlingChannel(SocketChannel handlingChannel) {
+        SessionManager.handlingChannel = handlingChannel;
+    }
 
     public static HashMap<Integer, Vehicle> getSessionHashMap(SocketChannel socketChannel) {
         return sessions.get(socketChannel).getHashMap();

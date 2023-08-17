@@ -1,7 +1,6 @@
 package Managers;
 
 import java.io.IOException;
-import java.net.ContentHandler;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
@@ -14,11 +13,13 @@ public class MessageHandler {
 
 
     public void connectClient(SocketChannel socketChannel) throws IOException {
+        SessionManager.setHandlingChannel(socketChannel);
         socketChannel.configureBlocking(false).register(selector, SelectionKey.OP_READ);
         SessionManager.openSession(socketChannel, new Session());
     }
 
     public void handleMessage(SocketChannel handlingChannel) throws IOException, ClassNotFoundException {
+        SessionManager.setHandlingChannel(handlingChannel);
         handlingChannel.configureBlocking(false);
         Container container = ContainerHandler.readContainer(handlingChannel);
         if(container.checkEnv){
@@ -37,6 +38,7 @@ public class MessageHandler {
     }
 
     public void disconnectClient(SocketChannel socketChannel) throws IOException {
+        SessionManager.setHandlingChannel(socketChannel);
         SessionManager.closeSession(socketChannel);
     }
 

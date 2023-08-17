@@ -13,7 +13,6 @@ public class Connection {
     public Connection(int port) throws IOException {
         serverSoketInitialization(port);
         selectorInitialization();
-
     }
 
     public void serverSoketInitialization(int port) throws IOException {
