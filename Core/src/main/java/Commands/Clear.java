@@ -1,12 +1,12 @@
 package Commands;
 
 import Managers.Container;
-import Managers.SessionManager;
+
+import java.nio.channels.SocketChannel;
 
 public class Clear extends AbstractCommand{
     @Override
-    public Container execute(Container container) {
-        SessionManager.getHandlingChannel();
+    public Container execute(Container container, SocketChannel socketChannel) {
         return null;
     }
 }

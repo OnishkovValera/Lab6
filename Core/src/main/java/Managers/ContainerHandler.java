@@ -9,7 +9,6 @@ import java.nio.channels.SocketChannel;
 public class ContainerHandler {
     private SocketChannel socketChannel;
 
-
     public SocketChannel getSocketChannel() {
         return socketChannel;
     }

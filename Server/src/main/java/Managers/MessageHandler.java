@@ -1,5 +1,8 @@
 package Managers;
 
+import Commands.Command;
+import Commands.Save;
+
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -13,33 +16,33 @@ public class MessageHandler {
 
 
     public void connectClient(SocketChannel socketChannel) throws IOException {
-        SessionManager.setHandlingChannel(socketChannel);
         socketChannel.configureBlocking(false).register(selector, SelectionKey.OP_READ);
-        SessionManager.openSession(socketChannel, new Session());
+        CollectionManager.openSession(socketChannel);
     }
 
     public void handleMessage(SocketChannel handlingChannel) throws IOException, ClassNotFoundException {
-        SessionManager.setHandlingChannel(handlingChannel);
         handlingChannel.configureBlocking(false);
         Container container = ContainerHandler.readContainer(handlingChannel);
         if(container.checkEnv){
             checkEnvironment(container.getEnv(), handlingChannel);
+
         }else if(container.endConnection){
             disconnectClient(handlingChannel);
 
         }else if(container.setNewVariable){
-            SessionManager.saveCollection(handlingChannel);
+            Command save = new Save();
+            save.execute(new Container("lol"), handlingChannel);
             checkEnvironment(container.getEnv(), handlingChannel);
 
         }else{
-            container.getCommand().execute(container);
+            container.getCommand().execute(container, handlingChannel);
+
         }
 
     }
 
     public void disconnectClient(SocketChannel socketChannel) throws IOException {
-        SessionManager.setHandlingChannel(socketChannel);
-        SessionManager.closeSession(socketChannel);
+        CollectionManager.closeSession(socketChannel);
     }
 
     public void checkEnvironment(String path, SocketChannel handlingChannel) throws IOException {
@@ -58,7 +61,7 @@ public class MessageHandler {
 
             } else {
                 //Инициализировать новую сессию
-                SessionManager.setVariable(handlingChannel, envPath.toString());
+                CollectionManager.setVariable(handlingChannel, envPath.toString());
                 System.out.println(envPath.toString());
                 ContainerHandler.sendContainer(new Container(false, "Success, variable is valid"), handlingChannel);
             }
@@ -79,6 +82,4 @@ public class MessageHandler {
     public MessageHandler(Selector selector) {
         this.selector = selector;
     }
-
-
 }
