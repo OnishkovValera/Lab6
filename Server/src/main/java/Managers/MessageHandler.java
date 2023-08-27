@@ -1,8 +1,5 @@
 package Managers;
 
-import Commands.Command;
-import Commands.Save;
-
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -30,12 +27,11 @@ public class MessageHandler {
             disconnectClient(handlingChannel);
 
         }else if(container.setNewVariable){
-            Command save = new Save();
-            save.execute(new Container("lol"), handlingChannel);
+            CollectionManager.closeSession(handlingChannel);
             checkEnvironment(container.getEnv(), handlingChannel);
 
         }else{
-            container.getCommand().execute(container, handlingChannel);
+            ContainerHandler.sendContainer(container.getCommand().execute(container, handlingChannel), handlingChannel);
 
         }
 

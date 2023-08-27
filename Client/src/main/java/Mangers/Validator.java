@@ -6,6 +6,7 @@ import InputData.Vehicle;
 import InputData.VehicleType;
 import Managers.Container;
 
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -16,14 +17,18 @@ public class Validator {
         String[] commandAndArgument = command.toLowerCase().trim().split(" ");
         Container container = null;
         if (CommandManager.isArgumentExists(commandAndArgument[0].trim())) {
-            if (CommandManager.isElementNeeded(commandAndArgument[0].trim())){
-                HashMap<Integer, Vehicle> hashMap = new HashMap<>();
-                hashMap.put(0, createVehicle());
-                container = new Container(CommandManager.getCommand(commandAndArgument[0]), commandAndArgument[1], hashMap);
+            if(commandAndArgument.length > 1) {
+                if (CommandManager.isElementNeeded(commandAndArgument[0].trim())) {
+                    HashMap<Integer, Vehicle> hashMap = new HashMap<>();
+                    hashMap.put(0, createVehicle());
+                    container = new Container(CommandManager.getCommand(commandAndArgument[0]), commandAndArgument[1], hashMap);
 
+                } else {
+                    container = new Container(CommandManager.getCommand(commandAndArgument[1]), commandAndArgument[0]);
+
+                }
             }else{
-                container = new Container(CommandManager.getCommand(commandAndArgument[1]), commandAndArgument[0]);
-
+                throw new InvalidParameterException();
             }
         }else{
             container = new Container(CommandManager.getCommand(commandAndArgument[0]));
@@ -74,7 +79,7 @@ public class Validator {
 
         int enginePower;
         while(true) {
-            System.out.println("Enter engin power\n$");
+            System.out.print("Enter engin power\n$");
             try {
                 enginePower = scn.nextInt();
                 if(enginePower > 0) {
@@ -105,8 +110,9 @@ public class Validator {
 
         VehicleType type;
         while(true) {
-            System.out.println("Enter vehicle type\n$");
+            System.out.print("Enter vehicle type (helicopter / submarine / chopper / spaceship)\n$");
             try {
+                scn.nextLine();
                 type = VehicleType.valueOf(scn.nextLine().toUpperCase());
                 break;
             } catch (IllegalArgumentException exception) {
@@ -116,6 +122,7 @@ public class Validator {
 
         FuelType fuelType;
         while(true) {
+            System.out.print("Enter fuel type (kerosene / alcohol / plasma)\n$");
             try {
                 fuelType = FuelType.valueOf(scn.nextLine().toUpperCase());
                 break;

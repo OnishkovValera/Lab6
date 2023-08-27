@@ -31,7 +31,7 @@ public class ContainerHandler {
 
     public static Container readContainer(@NotNull SocketChannel socketChannel) throws IOException, ClassNotFoundException {
 
-        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+        ByteBuffer byteBuffer = ByteBuffer.allocate(8000);
 
         socketChannel.read(byteBuffer);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteBuffer.array());

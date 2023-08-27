@@ -4,15 +4,16 @@ import InputData.Vehicle;
 
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class CollectionManager {
 
     public static HashMap<SocketChannel, Session> sessions = new HashMap<>();
+
+    public static HashMap<SocketChannel, Session> getSessions() {
+        return sessions;
+    }
 
     public static HashMap<Integer, Vehicle> getSessionHashMap(SocketChannel socketChannel) {
         return sessions.get(socketChannel).getHashMap();
@@ -50,12 +51,15 @@ public class CollectionManager {
         return numbers[randomNumber];
     }
 
-
-
-
-
-
-
-
+    public static Integer keyGenerator(HashMap<Integer, Vehicle> hashMap){
+        Set<Integer> numbers = hashMap.keySet();
+        Integer number;
+        if(!numbers.isEmpty()) {
+             number = IntStream.range(0, hashMap.size()).filter(i -> !numbers.contains(i)).min().getAsInt();
+        }else{
+            return 1;
+        }
+        return number;
+    }
 
 }

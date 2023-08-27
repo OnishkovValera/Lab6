@@ -4,7 +4,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.ConnectException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 public class Connection {
@@ -16,9 +18,17 @@ public class Connection {
             try {
                 socketChannel = SocketChannel.open();
                 socketChannel.connect(inetSocketAddress);
-                break;
+                if(socketChannel.isConnected()){
+                    System.out.println(socketChannel.getRemoteAddress());
+                    break;
+                }
             }catch (ConnectException exception){
                 socketChannel.close();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
         return socketChannel;

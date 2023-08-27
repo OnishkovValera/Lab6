@@ -1,6 +1,8 @@
 package InputData;
 
-public class Coordinates {
+import java.io.Serializable;
+
+public class Coordinates implements Serializable {
     private float x;
     private double y;
 
@@ -27,6 +29,6 @@ public class Coordinates {
 
     @Override
     public String toString() {
-        return "x: " + x + "y: " + y;
+        return "x: " + x + " y: " + y;
     }
 }

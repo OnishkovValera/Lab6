@@ -1,12 +1,16 @@
 package Commands;
 
+import InputData.Vehicle;
+import Managers.CollectionManager;
 import Managers.Container;
 
 import java.nio.channels.SocketChannel;
+import java.util.HashMap;
 
 public class RemoveGreater extends AbstractCommand{
     @Override
     public Container execute(Container container, SocketChannel socketChannel) {
-        return null;
+        HashMap<Integer, Vehicle> hashMap = CollectionManager.getSessionHashMap(socketChannel);
+        hashMap.keySet().stream().filter(integer -> hashMap.get(integer).compareTo(container.getHashMap().get(0))).forEach();
     }
 }

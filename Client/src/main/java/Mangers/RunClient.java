@@ -4,6 +4,7 @@ import Managers.Container;
 import Managers.ContainerHandler;
 
 import java.io.*;
+import java.security.InvalidParameterException;
 import java.util.Scanner;
 
 public class RunClient {
@@ -17,13 +18,15 @@ public class RunClient {
 
         while (true){
 
-            System.out.println("Write command");
-            System.out.print("$");
+            System.out.print("Write command\n$");
             Container container = null;
 
             try {
                 container = Validator.validateData(scn.nextLine());
-            }catch (IllegalArgumentException exception){
+            } catch (InvalidParameterException exception){
+                System.err.println("This command requires an index");
+                continue;
+            } catch (IllegalArgumentException exception){
                 System.err.println("No such command");
                 continue;
             }
@@ -40,13 +43,13 @@ public class RunClient {
             container = containerHandler.readContainer();
 
             if(container.error){
-                System.err.println(container.getCommand());
+                System.err.println(container.getArgument());
                 continue;
 
             }
 
-            if(container.getHashMap().equals(null)){
-                System.out.println(container.getCommand());
+            if(container.getHashMap() == null){
+                System.out.println(container.getArgument());
             }else {
                 for (Integer key : container.getHashMap().keySet()) {
                     System.out.println(container.getHashMap().get(key).toString());
