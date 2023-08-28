@@ -13,11 +13,14 @@ import java.util.Scanner;
 
 public class Validator {
 
-    public static Container validateData(String command) throws IllegalArgumentException{
+    public static Container validateData(String command) throws IllegalArgumentException, InterruptedException {
         String[] commandAndArgument = command.toLowerCase().trim().split(" ");
         Container container = null;
         if (CommandManager.isArgumentExists(commandAndArgument[0].trim())) {
             if(commandAndArgument.length > 1) {
+                if(!commandAndArgument[0].trim().equals("execute_script")){
+                    Integer.parseInt(commandAndArgument[1]);
+                }
                 if (CommandManager.isElementNeeded(commandAndArgument[0].trim())) {
                     HashMap<Integer, Vehicle> hashMap = new HashMap<>();
                     hashMap.put(0, createVehicle());
@@ -37,14 +40,15 @@ public class Validator {
         return container;
     }
 
-    public static Vehicle createVehicle(){
+    public static Vehicle createVehicle() throws InterruptedException {
 
         Scanner scn = new Scanner(System.in);
         String name;
         while(true) {
             System.out.print("Enter name\n$" );
             name = scn.nextLine().trim();
-            if(!(name.length() <= 0 & name.equals(null))){
+            if(!(name.length() <= 0 || name.equals(null))){
+                Thread.sleep(100);
                 break;
             }else{
                 System.err.println("Name mustn't be null or empty");
@@ -56,11 +60,12 @@ public class Validator {
             System.out.print("Enter coordinate x\n$");
             try {
                 x = scn.nextFloat();
+                Thread.sleep(100);
                 break;
 
             } catch (InputMismatchException exception) {
                 System.err.println("Coordinate x must be float");
-
+                scn.nextLine();
             }
         }
 
@@ -69,11 +74,12 @@ public class Validator {
             System.out.print("Enter coordinate y\n$");
             try {
                 y = scn.nextDouble();
+                Thread.sleep(100);
                 break;
 
             } catch (InputMismatchException exception) {
                 System.err.println("Coordinate y must be double");
-
+                scn.nextLine();
             }
         }
 
@@ -82,6 +88,7 @@ public class Validator {
             System.out.print("Enter engin power\n$");
             try {
                 enginePower = scn.nextInt();
+                Thread.sleep(100);
                 if(enginePower > 0) {
                     break;
                 }else{
@@ -89,7 +96,7 @@ public class Validator {
                 }
             } catch (InputMismatchException exception) {
                 System.err.println("Engine power must be integer");
-
+                scn.nextLine();
             }
         }
 
@@ -98,6 +105,7 @@ public class Validator {
             System.out.print("Enter capacity \n$");
             try {
                 capacity = scn.nextDouble();
+                Thread.sleep(100);
                 if(capacity > 0) {
                     break;
                 }else{
@@ -105,6 +113,7 @@ public class Validator {
                 }
             } catch (InputMismatchException exception) {
                 System.err.println("Capacity must be double");
+                scn.nextLine();
             }
         }
 
@@ -113,10 +122,12 @@ public class Validator {
             System.out.print("Enter vehicle type (helicopter / submarine / chopper / spaceship)\n$");
             try {
                 scn.nextLine();
+                Thread.sleep(100);
                 type = VehicleType.valueOf(scn.nextLine().toUpperCase());
                 break;
             } catch (IllegalArgumentException exception) {
                 System.err.println("No such type");
+                scn.nextLine();
             }
         }
 
@@ -125,9 +136,11 @@ public class Validator {
             System.out.print("Enter fuel type (kerosene / alcohol / plasma)\n$");
             try {
                 fuelType = FuelType.valueOf(scn.nextLine().toUpperCase());
+                Thread.sleep(100);
                 break;
             } catch (IllegalArgumentException exception) {
                 System.err.println("No such fuel type\n$");
+                scn.nextLine();
 
             }
         }
