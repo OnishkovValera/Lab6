@@ -12,7 +12,6 @@ public class CommandManager {
         commands.put("info", new Info());
         commands.put("show", new Show());
         commands.put("clear", new Clear());
-        commands.put("save", new Save());
         commands.put("average_of_engine_power", new AverageOfEnginePower());
         commands.put("insert", new Insert());
         commands.put("update", new Update());
@@ -23,14 +22,13 @@ public class CommandManager {
         commands.put("remove_all_by_capacity", new RemoveAllByCapacity());
         commands.put("filter_less_than_engine_power", new FilterLessThanEnginePower());
         commands.put("execute_script", new ExecuteScript());
-        commands.put("exit", new Exit());
+        commands.put("exit", new Save());
     }
     public CommandManager() {
         commands.put("help", new Help());
         commands.put("info", new Info());
         commands.put("show", new Show());
         commands.put("clear", new Clear());
-        commands.put("save", new Save());
         commands.put("average_of_engine_power", new AverageOfEnginePower());
         commands.put("insert", new Insert());
         commands.put("update", new Update());
@@ -41,7 +39,7 @@ public class CommandManager {
         commands.put("remove_all_by_capacity", new RemoveAllByCapacity());
         commands.put("filter_less_than_engine_power", new FilterLessThanEnginePower());
         commands.put("execute_script", new ExecuteScript());
-        commands.put("exit", new Exit());
+        commands.put("exit", new Save());
 
     }
     public static boolean isArgumentExists(String name){

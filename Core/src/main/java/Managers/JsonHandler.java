@@ -5,9 +5,12 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class JsonHandler {
     private class ConverterVehicle implements JsonSerializer<Vehicle>, JsonDeserializer<Vehicle> {
@@ -52,16 +55,23 @@ public class JsonHandler {
         return hashson;
     }
     public HashMap<Integer, Vehicle> toHashmap(String path){
+        Scanner scn;
+        try {
+            scn = new Scanner(Path.of(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         Type type = new TypeToken<HashMap<Integer, Vehicle>>(){}.getType();
         HashMap<Integer, Vehicle> hashMap;
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Vehicle.class, new ConverterVehicle());
         Gson gson = builder.create();
         try {
-            hashMap = gson.fromJson(path, type);
+            hashMap = gson.fromJson(scn.nextLine(), type);
         }catch(JsonSyntaxException exception){
             System.out.println("File is incorrect");
             hashMap = new HashMap<Integer, Vehicle>();
+            exception.printStackTrace();
         }
         return hashMap;
     }

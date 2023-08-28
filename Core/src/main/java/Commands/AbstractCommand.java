@@ -6,7 +6,7 @@ import java.util.Arrays;
 public abstract class AbstractCommand implements Command, Serializable {
     @Override
     public String toString() {
-        return fromCamelToSnake(getClass().getSimpleName());
+        return getClass().getSimpleName().toLowerCase();
     }
 
     private String fromCamelToSnake(String camelCaseString){
