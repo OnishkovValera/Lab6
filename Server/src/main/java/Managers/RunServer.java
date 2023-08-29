@@ -1,6 +1,7 @@
 package Managers;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
@@ -19,27 +20,36 @@ public class RunServer {
 
             if(iter.hasNext()){
                 SelectionKey handlingKey = iter.next();
+                try{
+                    if (!handlingKey.isValid()) {
+                        continue;
+                    }
 
-                if(!handlingKey.isValid()){
-                    continue;
+                    if (handlingKey.isAcceptable()) {
+                        messageHandler.connectClient(serverSocketChannel.accept());
+                    }
+
+                    if (handlingKey.isReadable()) {
+                        messageHandler.handleMessage((SocketChannel) handlingKey.channel());
+                    }
+
+                    if (handlingKey.isConnectable()) {
+                        messageHandler.disconnectClient((SocketChannel) handlingKey.channel());
+                        handlingKey.cancel();
+                    }
+
+                    iter.remove();
+                }catch (SocketException exception){
+                    System.out.println("Client dropped the connection");
+                    handlingKey.cancel();
+                    iter.remove();
+                    for(SocketChannel socketChannel: CollectionManager.getSessions().keySet()){
+                        CollectionManager.getSessions().get(socketChannel);
+
+                    }
                 }
-
-                if(handlingKey.isAcceptable()){
-                    messageHandler.connectClient(serverSocketChannel.accept());
-                }
-
-                if(handlingKey.isReadable()){
-                    messageHandler.handleMessage((SocketChannel) handlingKey.channel());
-                }
-
-                if(handlingKey.isConnectable()){
-                    messageHandler.disconnectClient((SocketChannel) handlingKey.channel());
-                }
-
-                iter.remove();
 
             }
-
         }
     }
 }
