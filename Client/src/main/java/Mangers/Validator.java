@@ -27,15 +27,20 @@ public class Validator {
                     container = new Container(CommandManager.getCommand(commandAndArgument[0]), commandAndArgument[1], hashMap);
 
                 } else {
-                    container = new Container(CommandManager.getCommand(commandAndArgument[1]), commandAndArgument[0]);
+                    container = new Container(CommandManager.getCommand(commandAndArgument[0]), commandAndArgument[1]);
 
                 }
             }else{
                 throw new InvalidParameterException();
             }
         }else{
-            container = new Container(CommandManager.getCommand(commandAndArgument[0]));
-
+            if (CommandManager.isElementNeeded(commandAndArgument[0].trim())) {
+                HashMap<Integer, Vehicle> hashMap = new HashMap<>();
+                hashMap.put(0, createVehicle());
+                container = new Container(CommandManager.getCommand(commandAndArgument[0]), null, hashMap);
+            }else {
+                container = new Container(CommandManager.getCommand(commandAndArgument[0]));
+            }
         }
         return container;
     }
@@ -139,7 +144,7 @@ public class Validator {
                 Thread.sleep(100);
                 break;
             } catch (IllegalArgumentException exception) {
-                System.err.println("No such fuel type\n$");
+                System.err.print("No such fuel type\n$");
                 scn.nextLine();
 
             }

@@ -44,7 +44,7 @@ public class RunServer {
                     handlingKey.cancel();
                     iter.remove();
                     for(SocketChannel socketChannel: CollectionManager.getSessions().keySet()){
-                        CollectionManager.getSessions().get(socketChannel);
+                        CollectionManager.closeSession(socketChannel);
 
                     }
                 }

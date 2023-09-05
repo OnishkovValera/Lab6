@@ -38,10 +38,15 @@ public class RunClient {
             }
 
             containerHandler.sendContainer(container);
-
-            if(container.getCommand().toString().equals("exit")){
-                System.out.println("App is closing");
+            if(container.getCommand().toString().equals("save")){
                 containerHandler.sendContainer(new Container(true));
+                container = containerHandler.readContainer();
+                if(container.error){
+                    System.out.println("Something went wrong");
+                }else{
+                    System.out.println(container.getArgument());
+                }
+                System.out.println("App is closing");
                 System.exit(1);
 
             }
@@ -57,8 +62,11 @@ public class RunClient {
 
             if(container.getHashMap() == null){
                 System.out.println(container.getArgument());
+
             }else {
+
                 for (Integer key : container.getHashMap().keySet()) {
+                    System.out.println("Key:" + key);
                     System.out.println(container.getHashMap().get(key).toString());
                 }
                 System.out.println(container.getArgument());

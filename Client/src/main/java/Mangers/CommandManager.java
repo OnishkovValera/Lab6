@@ -44,8 +44,8 @@ public class CommandManager {
     }
     public static boolean isArgumentExists(String name){
         return switch (name) {
-            case "help", "info", "show", "clear", "exit", "average_of_engine_power" -> false;
-            case "insert", "update", "remove_key", "execute_script", "remove_greater", "replase_if_greater", "remove_greater_key", "remove_all_by_capacity", "filter_less_than_engine_power" ->
+            case "help", "info", "show", "clear", "exit", "average_of_engine_power", "remove_greater" -> false;
+            case "insert", "update", "remove_key", "execute_script", "replace_if_greater", "remove_greater_key", "remove_all_by_capacity", "filter_less_than_engine_power" ->
                     true;
             default -> throw new IllegalArgumentException();
         };
