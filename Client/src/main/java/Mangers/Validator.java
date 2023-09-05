@@ -110,7 +110,7 @@ public class Validator {
             System.out.print("Enter capacity \n$");
             try {
                 capacity = scn.nextDouble();
-                Thread.sleep(100);
+
                 if(capacity > 0) {
                     break;
                 }else{
@@ -119,20 +119,22 @@ public class Validator {
             } catch (InputMismatchException exception) {
                 System.err.println("Capacity must be double");
                 scn.nextLine();
+                Thread.sleep(100);
             }
         }
 
         VehicleType type;
         while(true) {
             System.out.print("Enter vehicle type (helicopter / submarine / chopper / spaceship)\n$");
+            scn.nextLine();
             try {
-                scn.nextLine();
-                Thread.sleep(100);
-                type = VehicleType.valueOf(scn.nextLine().toUpperCase());
+                String lol = scn.nextLine();
+                type = VehicleType.valueOf(lol.toUpperCase());
                 break;
             } catch (IllegalArgumentException exception) {
                 System.err.println("No such type");
                 scn.nextLine();
+                Thread.sleep(100);
             }
         }
 
@@ -153,5 +155,6 @@ public class Validator {
         Vehicle vehicle = new Vehicle(name, new Coordinates(x, y), enginePower, capacity, type, fuelType);
 
         return vehicle;
+
     }
 }
