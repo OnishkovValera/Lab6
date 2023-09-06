@@ -60,6 +60,9 @@ public class RunClient {
                 System.out.println("App is closing");
                 System.exit(1);
             }
+
+            container = containerHandler.readContainer();
+
             if (container.error) {
                 System.err.println(container.getArgument());
                 Thread.sleep(100);
