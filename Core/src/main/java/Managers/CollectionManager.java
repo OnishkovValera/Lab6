@@ -9,7 +9,7 @@ import java.util.stream.IntStream;
 
 public class CollectionManager {
 
-    public static HashMap<SocketChannel, Session> sessions = new HashMap<>();
+    private static HashMap<SocketChannel, Session> sessions = new HashMap<>();
 
     public static HashMap<SocketChannel, Session> getSessions() {
         return sessions;
@@ -62,4 +62,17 @@ public class CollectionManager {
         return number;
     }
 
+    public static void updateOtherCollections(SocketChannel socketChannel){
+        String path = sessions.get(socketChannel).getPath();
+        Set<SocketChannel> sessionOnUpdate = new HashSet<>();
+
+        for (SocketChannel socketChannelOnUpdate: sessions.keySet()){
+            if(sessions.get(socketChannelOnUpdate).getPath().equals(path)){
+                sessionOnUpdate.add(socketChannelOnUpdate);
+            }
+        }
+        for(SocketChannel chanel: sessionOnUpdate){
+            sessions.get(chanel).setHashMap(sessions.get(socketChannel).getHashMap());
+        }
+    }
 }

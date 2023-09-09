@@ -5,7 +5,7 @@ import Commands.*;
 import java.util.HashMap;
 
 public class CommandManager {
-    public static HashMap<String, Command> commands = new HashMap<String, Command>();
+    public static HashMap<String, Command> commands = new HashMap<>();
 
     static{
         commands.put("help", new Help());
@@ -22,7 +22,7 @@ public class CommandManager {
         commands.put("remove_all_by_capacity", new RemoveAllByCapacity());
         commands.put("filter_less_than_engine_power", new FilterLessThanEnginePower());
         commands.put("execute_script", new ExecuteScript());
-        commands.put("exit", new Save());
+        commands.put("exit", new Exit());
     }
     public CommandManager() {
         commands.put("help", new Help());

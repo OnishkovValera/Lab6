@@ -22,6 +22,8 @@ public class RemoveGreaterKey extends AbstractCommand{
         for(Integer key: keys){
             hashMap.remove(key);
         }
+
+        CollectionManager.updateOtherCollections(socketChannel);
         return new Container(false, "All elements which have key more than the given has been deleted");
 
     }

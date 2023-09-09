@@ -19,7 +19,7 @@ public class RemoveGreater extends AbstractCommand{
         for(Object key : keys){
             System.out.println(key.toString());
         }
-
+        CollectionManager.updateOtherCollections(socketChannel);
         return new Container(false, "All elements less than the given one are removed");
     }
 }

@@ -1,5 +1,7 @@
 package Managers;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -20,15 +22,14 @@ public class MessageHandler {
     public void handleMessage(SocketChannel handlingChannel) throws IOException, ClassNotFoundException {
         handlingChannel.configureBlocking(false);
         Container container = ContainerHandler.readContainer(handlingChannel);
-        if(container.checkEnv){
+        if(container.setNewVariable) {
+            createNewEnvironment(container.getNameOfVariable(), container.getPathOfVariable(), handlingChannel);
+
+        }else if(container.checkEnv){
             checkEnvironment(container.getEnv(), handlingChannel);
 
         }else if(container.endConnection){
             disconnectClient(handlingChannel);
-
-        }else if(container.setNewVariable){
-            CollectionManager.closeSession(handlingChannel);
-            checkEnvironment(container.getEnv(), handlingChannel);
 
         }else{
             ContainerHandler.sendContainer(container.getCommand().execute(container, handlingChannel), handlingChannel);
@@ -39,6 +40,7 @@ public class MessageHandler {
 
     public void disconnectClient(SocketChannel socketChannel) throws IOException {
         CollectionManager.closeSession(socketChannel);
+        ContainerHandler.sendContainer(new Container(false, "Session closed"), socketChannel);
     }
 
     public void checkEnvironment(String path, SocketChannel handlingChannel) throws IOException {
@@ -61,11 +63,39 @@ public class MessageHandler {
                 System.out.println(envPath.toString());
                 ContainerHandler.sendContainer(new Container(false, "Success, variable is valid"), handlingChannel);
             }
+
         }catch (NullPointerException exception){
             ContainerHandler.sendContainer(new Container(true, "No such variable" ), handlingChannel);
         }
     }
 
+    public void createNewEnvironment(String nameOfVariable, String pathOfVariable, SocketChannel socketChannel) throws IOException {
+        Path newEnvPath = Path.of(pathOfVariable , nameOfVariable);
+
+        if(Files.exists(newEnvPath)){
+            ContainerHandler.sendContainer(new Container(true, "Such file is already exist" ), socketChannel);
+        }else {
+            try {
+                File file = new File(newEnvPath.toString());
+                if(file.createNewFile()) {
+                    Thread.sleep(1000);
+                    ContainerHandler.sendContainer(new Container(false, "File created"), socketChannel);
+                    FileWriter writer = new FileWriter(newEnvPath.toString());
+                    writer.write("{}");
+                    writer.close();
+
+                    CollectionManager.setVariable(socketChannel, newEnvPath.toString());
+                    System.out.println(newEnvPath);
+
+                }else{
+                    ContainerHandler.sendContainer(new Container(true, "Cant create this file"), socketChannel);
+                }
+
+            } catch (IOException | InterruptedException exception){
+                ContainerHandler.sendContainer(new Container(true, "No such path"), socketChannel);
+            }
+        }
+    }
 
     public Selector getSelector() {
         return selector;

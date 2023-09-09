@@ -8,12 +8,17 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RunServer {
+    Logger logger = Logger.getLogger(RunServer.class.getName());
     public void run(Selector selector, ServerSocketChannel serverSocketChannel) throws IOException, ClassNotFoundException {
         MessageHandler messageHandler = new MessageHandler(selector);
+        logger.log(Level.INFO, "Selector waiting");
 
         while (true){
+
             selector.select();
             Set<SelectionKey> selectionKeySet = selector.selectedKeys();
             Iterator<SelectionKey> iter = selectionKeySet.iterator();
@@ -41,14 +46,11 @@ public class RunServer {
                     iter.remove();
                 }catch (SocketException exception){
                     System.out.println("Client dropped the connection");
+                    CollectionManager.getSessions().remove((SocketChannel) handlingKey.channel());
                     handlingKey.cancel();
                     iter.remove();
-                    for(SocketChannel socketChannel: CollectionManager.getSessions().keySet()){
-                        CollectionManager.closeSession(socketChannel);
 
-                    }
                 }
-
             }
         }
     }

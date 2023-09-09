@@ -73,6 +73,7 @@ public class Container implements Serializable {
 
     public Container(String env) {
         this.checkEnv = true;
+        this.setNewVariable = false;
         this.env = env;
     }
 

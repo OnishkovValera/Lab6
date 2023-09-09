@@ -52,5 +52,4 @@ public class Session {
         bw.write(jsonHandler.HashmapToJson(hashMap));
         bw.close();
     }
-
 }

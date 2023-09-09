@@ -11,7 +11,6 @@ public class RunClient {
     Scanner scn = new Scanner(System.in);
     String env;
 
-
     public void run(ContainerHandler containerHandler) throws IOException, ClassNotFoundException, InterruptedException {
 
         EnvironmentHandler.setEnvironment();
@@ -28,46 +27,62 @@ public class RunClient {
                 System.err.println("This command requires an argument");
                 Thread.sleep(100);
                 continue;
+
             }catch (NumberFormatException exception){
                 System.err.println("Argument must be number");
                 Thread.sleep(100);
                 continue;
+
             } catch (IllegalArgumentException exception){
                 System.err.println("No such command");
                 Thread.sleep(100);
                 continue;
+
             }
-            
-            
+
+
             afterValidationStage(containerHandler, container);
-            
+
         }
     }
-    public static void afterValidationStage(ContainerHandler containerHandler, Container container) throws IOException, ClassNotFoundException, InterruptedException {
-        if(container.getCommand().toString().equals("executescript")) {
+
+    public static void afterValidationStage(ContainerHandler containerHandler, Container container)
+            throws IOException, ClassNotFoundException, InterruptedException {
+
+        if (container.getCommand().toString().equals("executescript")) {
             ScriptHandler.handle(containerHandler, container.getArgument());
 
-        }else {
-            containerHandler.sendContainer(container);
-            if (container.getCommand().toString().equals("save")) {
-                containerHandler.sendContainer(new Container(true));
-                container = containerHandler.readContainer();
-                if (container.error) {
-                    System.out.println("Something went wrong");
-                } else {
-                    System.out.println(container.getArgument());
+        } else if (container.getCommand().toString().equals("exit")) {
+            containerHandler.sendContainer(new Container(true));
+
+            container = containerHandler.readContainer();
+
+            if (container.error) {
+                System.out.println("Something went wrong");
+                System.out.println("Do you want to close application?[Y/N]\n$");
+                Scanner scn = new Scanner(System.in);
+
+                if (scn.nextLine().trim().equalsIgnoreCase("y")) {
+                    System.out.println("App is closing");
+                    System.exit(1);
+
                 }
+
+            } else {
+                System.out.println(container.getArgument());
                 System.out.println("App is closing");
                 System.exit(1);
             }
 
+        } else {
+            containerHandler.sendContainer(container);
             container = containerHandler.readContainer();
 
             if (container.error) {
                 System.err.println(container.getArgument());
                 Thread.sleep(100);
 
-            }else if(container.getHashMap() == null){
+            } else if (container.getHashMap() == null) {
 
                 System.out.println(container.getArgument());
 
@@ -76,8 +91,11 @@ public class RunClient {
                     System.out.println("Key:" + key);
                     System.out.println(container.getHashMap().get(key).toString());
                 }
+
                 System.out.println(container.getArgument());
+
             }
         }
     }
 }
+

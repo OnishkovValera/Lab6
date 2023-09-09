@@ -16,6 +16,7 @@ public class ScriptHandler {
 
         try {
             scn = new Scanner(new File(path));
+
         } catch (FileNotFoundException e) {
             System.err.println("No such file");
             Thread.sleep(100);

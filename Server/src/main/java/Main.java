@@ -2,13 +2,14 @@ import Managers.Connection;
 import Managers.RunServer;
 
 import java.io.IOException;
-import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        Scanner scn = new Scanner(System.in);
-        System.out.println("Enter port");
-        Connection connection = new Connection(scn.nextInt());
+        Logger logger = Logger.getLogger(Main.class.getName());
+        logger.log(Level.INFO, "Server started");
+        Connection connection = new Connection(8080);
         RunServer server = new RunServer();
         server.run(connection.getSelector(), connection.getServerSocketChannel());
 

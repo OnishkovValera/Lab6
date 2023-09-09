@@ -23,6 +23,8 @@ public class RemoveAllByCapacity extends AbstractCommand{
         for(int i = 0; i < intKeys.length; i++){
             CollectionManager.getSessionHashMap(socketChannel).remove(intKeys[i]);
         }
+
+        CollectionManager.updateOtherCollections(socketChannel);
         return new Container(false, "All vehicles with capacity = " + container.getArgument() + " have been deleted");
     }
 }
