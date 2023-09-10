@@ -40,13 +40,12 @@ public class RunClient {
 
             }
 
-
             afterValidationStage(containerHandler, container);
 
         }
     }
 
-    public static void afterValidationStage(ContainerHandler containerHandler, Container container)
+    public static void  afterValidationStage(ContainerHandler containerHandler, Container container)
             throws IOException, ClassNotFoundException, InterruptedException {
 
         if (container.getCommand().toString().equals("executescript")) {

@@ -1,5 +1,7 @@
 package Managers;
 
+import com.google.gson.JsonSyntaxException;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -8,34 +10,43 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MessageHandler {
-
+    Logger logger = Logger.getLogger(MessageHandler.class.getName());
     private Selector selector;
 
 
     public void connectClient(SocketChannel socketChannel) throws IOException {
+
         socketChannel.configureBlocking(false).register(selector, SelectionKey.OP_READ);
         CollectionManager.openSession(socketChannel);
+
+        logger.log(Level.INFO, "Client from address " + socketChannel.getRemoteAddress() + " connected");
+
     }
 
     public void handleMessage(SocketChannel handlingChannel) throws IOException, ClassNotFoundException {
         handlingChannel.configureBlocking(false);
         Container container = ContainerHandler.readContainer(handlingChannel);
+
         if(container.setNewVariable) {
             createNewEnvironment(container.getNameOfVariable(), container.getPathOfVariable(), handlingChannel);
+            logger.log(Level.INFO, "Creating new variable for client with address " + handlingChannel.getRemoteAddress());
 
         }else if(container.checkEnv){
             checkEnvironment(container.getEnv(), handlingChannel);
+            logger.log(Level.INFO, "Check environment variable from client with address " + handlingChannel.getRemoteAddress());
 
         }else if(container.endConnection){
             disconnectClient(handlingChannel);
 
         }else{
             ContainerHandler.sendContainer(container.getCommand().execute(container, handlingChannel), handlingChannel);
+            logger.log(Level.INFO, "Sending response to client with address " + handlingChannel.getRemoteAddress() );
 
         }
-
     }
 
     public void disconnectClient(SocketChannel socketChannel) throws IOException {
@@ -59,13 +70,21 @@ public class MessageHandler {
 
             } else {
                 //Инициализировать новую сессию
-                CollectionManager.setVariable(handlingChannel, envPath.toString());
-                System.out.println(envPath.toString());
-                ContainerHandler.sendContainer(new Container(false, "Success, variable is valid"), handlingChannel);
+                try{
+                    CollectionManager.setVariable(handlingChannel, envPath.toString());
+                    ContainerHandler.sendContainer(new Container(false, "Success, variable is valid"), handlingChannel);
+
+                }catch (JsonSyntaxException exception){
+                    ContainerHandler.sendContainer(new Container(true, "Something wrong with file"), handlingChannel);
+
+                }
             }
+            logger.log(Level.INFO, "Sending a response");
 
         }catch (NullPointerException exception){
             ContainerHandler.sendContainer(new Container(true, "No such variable" ), handlingChannel);
+            logger.log(Level.INFO, "Sending a response with error");
+
         }
     }
 
@@ -77,7 +96,7 @@ public class MessageHandler {
         }else {
             try {
                 File file = new File(newEnvPath.toString());
-                if(file.createNewFile()) {
+                if (file.createNewFile()) {
                     Thread.sleep(1000);
                     ContainerHandler.sendContainer(new Container(false, "File created"), socketChannel);
                     FileWriter writer = new FileWriter(newEnvPath.toString());
@@ -87,14 +106,15 @@ public class MessageHandler {
                     CollectionManager.setVariable(socketChannel, newEnvPath.toString());
                     System.out.println(newEnvPath);
 
-                }else{
+                } else {
                     ContainerHandler.sendContainer(new Container(true, "Cant create this file"), socketChannel);
                 }
 
-            } catch (IOException | InterruptedException exception){
+            } catch (IOException | InterruptedException exception) {
                 ContainerHandler.sendContainer(new Container(true, "No such path"), socketChannel);
             }
         }
+        logger.log(Level.INFO, "Sending a response");
     }
 
     public Selector getSelector() {

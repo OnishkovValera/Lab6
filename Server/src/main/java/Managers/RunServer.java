@@ -18,7 +18,7 @@ public class RunServer {
         logger.log(Level.INFO, "Selector waiting");
 
         while (true){
-
+            logger.log(Level.INFO, "Waiting messages or connections");
             selector.select();
             Set<SelectionKey> selectionKeySet = selector.selectedKeys();
             Iterator<SelectionKey> iter = selectionKeySet.iterator();
@@ -35,6 +35,7 @@ public class RunServer {
                     }
 
                     if (handlingKey.isReadable()) {
+                        logger.log(Level.INFO,"Get message from client with address " + ((SocketChannel)handlingKey.channel()).getRemoteAddress());
                         messageHandler.handleMessage((SocketChannel) handlingKey.channel());
                     }
 
@@ -45,11 +46,18 @@ public class RunServer {
 
                     iter.remove();
                 }catch (SocketException exception){
-                    System.out.println("Client dropped the connection");
-                    CollectionManager.getSessions().remove((SocketChannel) handlingKey.channel());
-                    handlingKey.cancel();
-                    iter.remove();
+                    try {
+                        logger.log(Level.INFO, "Disconnect client with address " +
+                                ((SocketChannel) handlingKey.channel()).getRemoteAddress() +
+                                ", session was started in " +
+                                CollectionManager.getSession((SocketChannel) handlingKey.channel()).getStartSession());
+                        CollectionManager.getSessions().remove((SocketChannel) handlingKey.channel());
+                        handlingKey.cancel();
+                        iter.remove();
 
+                    }catch(NullPointerException e){
+                        logger.log(Level.WARNING, e.getMessage());
+                    }
                 }
             }
         }

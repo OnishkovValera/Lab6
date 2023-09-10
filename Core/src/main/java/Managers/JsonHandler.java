@@ -54,7 +54,7 @@ public class JsonHandler {
         hashson = gson.toJson(hashMap);
         return hashson;
     }
-    public HashMap<Integer, Vehicle> toHashmap(String path){
+    public HashMap<Integer, Vehicle> toHashmap(String path) throws JsonSyntaxException{
         Scanner scn;
         try {
             scn = new Scanner(Path.of(path));
@@ -66,13 +66,8 @@ public class JsonHandler {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Vehicle.class, new ConverterVehicle());
         Gson gson = builder.create();
-        try {
-            hashMap = gson.fromJson(scn.nextLine(), type);
-        }catch(JsonSyntaxException exception){
-            System.out.println("File is incorrect");
-            hashMap = new HashMap<Integer, Vehicle>();
-            exception.printStackTrace();
-        }
+        hashMap = gson.fromJson(scn.nextLine(), type);
         return hashMap;
     }
+
 }

@@ -1,6 +1,7 @@
 package Managers;
 
 import InputData.Vehicle;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
@@ -18,7 +19,7 @@ public class CollectionManager {
     public static HashMap<Integer, Vehicle> getSessionHashMap(SocketChannel socketChannel) {
         return sessions.get(socketChannel).getHashMap();
     }
-    public static void setVariable(SocketChannel socketChannel, String path){
+    public static void setVariable(SocketChannel socketChannel, String path)throws JsonSyntaxException {
         sessions.get(socketChannel).initializeSession(path);
     }
     public static void openSession(SocketChannel socketChannel){
