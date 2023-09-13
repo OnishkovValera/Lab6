@@ -6,6 +6,7 @@ import InputData.Vehicle;
 import InputData.VehicleType;
 import Managers.Container;
 
+import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -13,14 +14,15 @@ import java.util.Scanner;
 
 public class Validator {
 
-    public static Container validateData(String command) throws IllegalArgumentException, InterruptedException {
+    public static Container validateData(String command) throws IllegalArgumentException, InterruptedException, IOException {
         String[] commandAndArgument = command.toLowerCase().trim().split(" ");
         Container container = null;
         if (CommandManager.isArgumentExists(commandAndArgument[0].trim())) {
-            if(commandAndArgument.length > 1) {
-                if(!commandAndArgument[0].trim().equals("execute_script")){
+            if (commandAndArgument.length > 1) {
+                if (!commandAndArgument[0].trim().equals("execute_script")) {
                     Integer.parseInt(commandAndArgument[1]);
                 }
+
                 if (CommandManager.isElementNeeded(commandAndArgument[0].trim())) {
                     HashMap<Integer, Vehicle> hashMap = new HashMap<>();
                     hashMap.put(0, createVehicle());
@@ -30,124 +32,135 @@ public class Validator {
                     container = new Container(CommandManager.getCommand(commandAndArgument[0]), commandAndArgument[1]);
 
                 }
-            }else{
+            } else {
                 throw new InvalidParameterException();
             }
-        }else{
+        } else {
             if (CommandManager.isElementNeeded(commandAndArgument[0].trim())) {
                 HashMap<Integer, Vehicle> hashMap = new HashMap<>();
                 hashMap.put(0, createVehicle());
                 container = new Container(CommandManager.getCommand(commandAndArgument[0]), null, hashMap);
-            }else {
+            } else {
                 container = new Container(CommandManager.getCommand(commandAndArgument[0]));
             }
         }
         return container;
     }
 
-    public static Vehicle createVehicle() throws InterruptedException {
+
+    public static Vehicle createVehicle() throws InterruptedException, IOException {
 
         Scanner scn = new Scanner(System.in);
         String name;
-        while(true) {
-            System.out.print("Enter name\n$" );
+        String input;
+        while (true) {
+            System.out.print("Enter name\n$");
             name = scn.nextLine().trim();
-            if(!(name.length() <= 0 || name.equals(null))){
+
+            if (!(name.length() <= 0 || name.equals(null))) {
                 Thread.sleep(100);
                 break;
-            }else{
+
+            } else {
                 System.err.println("Name mustn't be null or empty");
+
             }
         }
 
         float x;
-        while(true) {
+        while (true) {
+
             System.out.print("Enter coordinate x\n$");
+
             try {
-                x = scn.nextFloat();
+
+                input = scn.nextLine();
+                x = Float.parseFloat(input.trim().toLowerCase());
                 Thread.sleep(100);
                 break;
 
-            } catch (InputMismatchException exception) {
+            } catch (NumberFormatException exception) {
                 System.err.println("Coordinate x must be float");
-                scn.nextLine();
+
             }
         }
 
         double y;
-        while(true) {
+        while (true) {
             System.out.print("Enter coordinate y\n$");
             try {
-                y = scn.nextDouble();
+                input = scn.nextLine();
+                y = Double.parseDouble(input.toLowerCase().trim());
                 Thread.sleep(100);
                 break;
 
-            } catch (InputMismatchException exception) {
+            } catch (NumberFormatException exception) {
                 System.err.println("Coordinate y must be double");
-                scn.nextLine();
             }
         }
 
         int enginePower;
-        while(true) {
+        while (true) {
             System.out.print("Enter engin power\n$");
             try {
-                enginePower = scn.nextInt();
+
+
+                input = scn.nextLine();
+
+                enginePower = Integer.parseInt(input.trim().toLowerCase());
                 Thread.sleep(100);
-                if(enginePower > 0) {
+                if (enginePower > 0) {
                     break;
-                }else{
+                } else {
                     System.err.println("Engine power must be bigger than zero");
                 }
-            } catch (InputMismatchException exception) {
+            } catch (NumberFormatException exception) {
                 System.err.println("Engine power must be integer");
-                scn.nextLine();
             }
         }
 
         double capacity;
-        while(true) {
+        while (true) {
             System.out.print("Enter capacity \n$");
             try {
-                capacity = scn.nextDouble();
+                input = scn.nextLine();
+                capacity = Double.parseDouble(input);
 
-                if(capacity > 0) {
+                if (capacity > 0) {
                     break;
-                }else{
+                } else {
                     System.err.println("Capacity must be bigger that zero");
                 }
-            } catch (InputMismatchException exception) {
+            } catch (NumberFormatException exception) {
                 System.err.println("Capacity must be double");
-                scn.nextLine();
                 Thread.sleep(100);
             }
         }
 
         VehicleType type;
-        while(true) {
+        while (true) {
             System.out.print("Enter vehicle type (helicopter / submarine / chopper / spaceship)\n$");
-            scn.nextLine();
             try {
-                String lol = scn.nextLine();
-                type = VehicleType.valueOf(lol.toUpperCase());
+                input = scn.nextLine();
+                type = VehicleType.valueOf(input.toUpperCase().trim());
                 break;
+
             } catch (IllegalArgumentException exception) {
                 System.err.println("No such type");
-                scn.nextLine();
                 Thread.sleep(100);
             }
         }
 
         FuelType fuelType;
-        while(true) {
+        while (true) {
             System.out.print("Enter fuel type (kerosene / alcohol / plasma)\n$");
             try {
-                fuelType = FuelType.valueOf(scn.nextLine().toUpperCase());
+                input = scn.nextLine();
+                fuelType = FuelType.valueOf(input.trim().toUpperCase());
                 Thread.sleep(100);
                 break;
             } catch (IllegalArgumentException exception) {
-                System.err.print("No such fuel type\n$");
-                scn.nextLine();
+                System.err.print("No such fuel type");
 
             }
         }

@@ -1,7 +1,5 @@
 package Managers;
 
-import com.google.gson.JsonSyntaxException;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -70,14 +68,8 @@ public class MessageHandler {
 
             } else {
                 //Инициализировать новую сессию
-                try{
-                    CollectionManager.setVariable(handlingChannel, envPath.toString());
-                    ContainerHandler.sendContainer(new Container(false, "Success, variable is valid"), handlingChannel);
-
-                }catch (JsonSyntaxException exception){
-                    ContainerHandler.sendContainer(new Container(true, "Something wrong with file"), handlingChannel);
-
-                }
+                CollectionManager.setVariable(handlingChannel, envPath.toString());
+                ContainerHandler.sendContainer(new Container(false, "Success, variable is valid"), handlingChannel);
             }
             logger.log(Level.INFO, "Sending a response");
 
