@@ -6,10 +6,10 @@ import Mangers.RunClient;
 import java.io.IOException;
 
 
-public class Main {
+public class MainClient {
     public static void main(String[] args) throws ClassNotFoundException, InterruptedException, IOException {
 
-        ContainerHandler containerHandler = new ContainerHandler(Connection.connect("localhost", 8080));
+        ContainerHandler containerHandler = new ContainerHandler(Connection.connect("localhost", 8018));
         EnvironmentHandler.setContainerHandler(containerHandler);
 
         while(true) {
@@ -20,7 +20,7 @@ public class Main {
             } catch (IOException exception) {
                 System.err.println("Server reset connection");
                 Thread.sleep(100);
-                containerHandler = new ContainerHandler(Connection.connect("localhost", 8080));
+                containerHandler = new ContainerHandler(Connection.connect("localhost", 8018));
                 EnvironmentHandler.setContainerHandler(containerHandler);
 
             }

@@ -1,6 +1,7 @@
 package Managers;
 
 import java.io.IOException;
+import java.io.StreamCorruptedException;
 import java.net.SocketException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -45,19 +46,22 @@ public class RunServer {
                     }
 
                     iter.remove();
-                }catch (SocketException exception){
+
+                }catch (SocketException exception) {
                     try {
                         logger.log(Level.INFO, "Disconnect client with address " +
                                 ((SocketChannel) handlingKey.channel()).getRemoteAddress() +
                                 ", session was started in " +
                                 CollectionManager.getSession((SocketChannel) handlingKey.channel()).getStartSession());
-                        CollectionManager.getSessions().remove((SocketChannel) handlingKey.channel());
                         handlingKey.cancel();
                         iter.remove();
-
-                    }catch(NullPointerException e){
-                        logger.log(Level.WARNING, e.getMessage());
+                    } catch (NullPointerException e) {
+                        handlingKey.cancel();
+                        iter.remove();
                     }
+                }catch (StreamCorruptedException exception){
+                    handlingKey.cancel();
+                    iter.remove();
                 }
             }
         }

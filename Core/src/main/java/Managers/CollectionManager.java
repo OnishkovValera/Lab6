@@ -19,7 +19,7 @@ public class CollectionManager {
     public static HashMap<Integer, Vehicle> getSessionHashMap(SocketChannel socketChannel) {
         return sessions.get(socketChannel).getHashMap();
     }
-    public static void setVariable(SocketChannel socketChannel, String path)throws JsonSyntaxException {
+    public static void setVariable(SocketChannel socketChannel, String path){
         sessions.get(socketChannel).initializeSession(path);
     }
     public static void openSession(SocketChannel socketChannel){
@@ -30,6 +30,7 @@ public class CollectionManager {
         sessions.get(socketChannel).saveCollection();
         sessions.remove(socketChannel);
     }
+
 
     public static void saveCollection(SocketChannel socketChannel) throws IOException {
         sessions.get(socketChannel).saveCollection();

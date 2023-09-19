@@ -48,8 +48,13 @@ public class MessageHandler {
     }
 
     public void disconnectClient(SocketChannel socketChannel) throws IOException {
+        logger.log(Level.INFO, "Disconnect client with address " +
+                socketChannel.getRemoteAddress() +
+                ", session was started in " +
+                CollectionManager.getSession(socketChannel).getStartSession());
         CollectionManager.closeSession(socketChannel);
         ContainerHandler.sendContainer(new Container(false, "Session closed"), socketChannel);
+
     }
 
     public void checkEnvironment(String path, SocketChannel handlingChannel) throws IOException {

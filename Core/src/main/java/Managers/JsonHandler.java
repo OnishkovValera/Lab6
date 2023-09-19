@@ -46,6 +46,7 @@ public class JsonHandler {
             return object;
         }
     }
+
     public String HashmapToJson(HashMap<Integer, Vehicle> hashMap){
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Vehicle.class, new ConverterVehicle());
@@ -54,6 +55,7 @@ public class JsonHandler {
         hashson = gson.toJson(hashMap);
         return hashson;
     }
+    
     public HashMap<Integer, Vehicle> toHashmap(String path) throws JsonSyntaxException{
         Scanner scn;
         try {
