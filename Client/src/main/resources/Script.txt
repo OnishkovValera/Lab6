@@ -1,0 +1,3 @@
+show
+info
+execute_script C:\Users\onish\IdeaProjects\Lab6\Client\src\main\resources\Script2.txt

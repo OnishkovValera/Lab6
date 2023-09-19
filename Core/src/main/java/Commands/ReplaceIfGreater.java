@@ -19,6 +19,7 @@ public class ReplaceIfGreater extends AbstractCommand{
                                     vehicle.getName(), vehicle.getCoordinates(),vehicle.getCreationDate() ,
                                     vehicle.getEnginePower(), vehicle.getCapacity(), vehicle.getType(),
                                     vehicle.getFuelType()));
+            CollectionManager.updateOtherCollections(socketChannel);
             return new Container(false, "This vehicle has been removed and added a new one");
         }else{
             return new Container(true, "This vehicle isn't bigger than old one");

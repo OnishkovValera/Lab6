@@ -1,6 +1,7 @@
 package Managers;
 
 import InputData.Vehicle;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -18,6 +19,9 @@ public class Session {
     private String path;
     private Date startSession;
 
+    public Date getStartSession() {
+        return startSession;
+    }
 
     public HashMap<Integer, Vehicle> getHashMap() {
         return hashMap;
@@ -41,7 +45,7 @@ public class Session {
     }
 
 
-    public void initializeSession(String path){
+    public void initializeSession(String path) throws JsonSyntaxException {
         this.path = path;
         hashMap = jsonHandler.toHashmap(path);
     }
@@ -52,5 +56,4 @@ public class Session {
         bw.write(jsonHandler.HashmapToJson(hashMap));
         bw.close();
     }
-
 }

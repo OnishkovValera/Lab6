@@ -15,6 +15,7 @@ public class Update extends AbstractCommand{
                         vehicle.getName(), vehicle.getCoordinates(),
                         vehicle.getCreationDate(), vehicle.getEnginePower(),
                         vehicle.getCapacity(), vehicle.getType(), vehicle.getFuelType()));
+        CollectionManager.updateOtherCollections(socketChannel);
         return new Container(false,"Vehicle has been updated");
     }
 }

@@ -13,7 +13,11 @@ public class Insert extends AbstractCommand{
     public Container execute(Container container, SocketChannel socketChannel) {
         HashMap<Integer, Vehicle> hashMap = CollectionManager.getSessionHashMap(socketChannel);
         Vehicle vehicle = container.getHashMap().get(0);
-        hashMap.put(Integer.parseInt(container.getArgument()), new Vehicle(CollectionManager.idGenerator(hashMap), vehicle.getName(), vehicle.getCoordinates(), LocalDate.now(), vehicle.getEnginePower(), vehicle.getCapacity(), vehicle.getType(), vehicle.getFuelType()));
+        hashMap.put(Integer.parseInt(container.getArgument()),
+                new Vehicle(CollectionManager.idGenerator(hashMap), vehicle.getName(), vehicle.getCoordinates(),
+                        LocalDate.now(), vehicle.getEnginePower(), vehicle.getCapacity(),
+                        vehicle.getType(), vehicle.getFuelType()));
+        CollectionManager.updateOtherCollections(socketChannel);
         return new Container(false, "Added");
     }
 

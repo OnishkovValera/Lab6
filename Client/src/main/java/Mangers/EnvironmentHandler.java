@@ -18,39 +18,46 @@ public class EnvironmentHandler {
         Scanner scn = new Scanner(System.in);
 
         while (true) {
-            System.out.print("Enter name of environment variable\n$");
+            System.out.print("Do you want to create new environment variable?[Y/N]\n$");
+            Container container;
 
-            env = scn.nextLine().trim();
+            if(scn.nextLine().trim().equalsIgnoreCase("y")){
 
-            Container container = new Container(env);
-            containerHandler.sendContainer(container);
-            container = containerHandler.readContainer();
+                System.out.print("Enter path of new variable\n$");
+                String path = scn.nextLine().trim();
 
-            if(container.error){
-                System.err.println(container.getArgument());
-                Thread.sleep(50);
-                System.out.print("Do you want to create new environment variable?[Y/N]\n$");
+                System.out.print("Enter name of new variable\n$");
+                env = scn.nextLine().trim();
 
-                String answer = scn.nextLine().trim().toLowerCase();
+                containerHandler.sendContainer(new Container(env, path));
 
-                if(answer.equals("y")){
-                    System.out.print("Enter path for this variable\n$");
-                    String path = scn.nextLine();
-                    containerHandler.sendContainer(new Container(env, path));
-                    container = containerHandler.readContainer();
+                container = containerHandler.readContainer();
 
-                    if(container.error){
-                        System.out.println(container.getArgument());
-                    }else{
-                        System.out.println(container.getArgument());
-                        break;
-                    }
+                if(container.error){
+                    System.out.println(container.getArgument());
+                }else{
+                    System.out.println(container.getArgument());
+                    break;
                 }
+
             }else{
-                System.out.println(container.getArgument());
-                break;
+
+                System.out.println("Enter path of variable");
+                env = scn.nextLine().trim();
+
+                containerHandler.sendContainer(new Container(env));
+                container = containerHandler.readContainer();
+
+                if(container.error) {
+                    System.err.println(container.getArgument());
+                    Thread.sleep(50);
+
+                }else{
+                    System.out.println(container.getArgument());
+                    break;
+
+                }
             }
         }
-
     }
 }

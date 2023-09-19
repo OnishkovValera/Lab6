@@ -1,6 +1,7 @@
 package Managers;
 
 import InputData.Vehicle;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
@@ -9,7 +10,7 @@ import java.util.stream.IntStream;
 
 public class CollectionManager {
 
-    public static HashMap<SocketChannel, Session> sessions = new HashMap<>();
+    private static HashMap<SocketChannel, Session> sessions = new HashMap<>();
 
     public static HashMap<SocketChannel, Session> getSessions() {
         return sessions;
@@ -29,6 +30,7 @@ public class CollectionManager {
         sessions.get(socketChannel).saveCollection();
         sessions.remove(socketChannel);
     }
+
 
     public static void saveCollection(SocketChannel socketChannel) throws IOException {
         sessions.get(socketChannel).saveCollection();
@@ -62,4 +64,17 @@ public class CollectionManager {
         return number;
     }
 
+    public static void updateOtherCollections(SocketChannel socketChannel){
+        String path = sessions.get(socketChannel).getPath();
+        Set<SocketChannel> sessionOnUpdate = new HashSet<>();
+
+        for (SocketChannel socketChannelOnUpdate: sessions.keySet()){
+            if(sessions.get(socketChannelOnUpdate).getPath().equals(path)){
+                sessionOnUpdate.add(socketChannelOnUpdate);
+            }
+        }
+        for(SocketChannel chanel: sessionOnUpdate){
+            sessions.get(chanel).setHashMap(sessions.get(socketChannel).getHashMap());
+        }
+    }
 }

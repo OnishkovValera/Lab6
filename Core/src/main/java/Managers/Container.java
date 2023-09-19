@@ -73,6 +73,7 @@ public class Container implements Serializable {
 
     public Container(String env) {
         this.checkEnv = true;
+        this.setNewVariable = false;
         this.env = env;
     }
 
@@ -99,9 +100,9 @@ public class Container implements Serializable {
         this.argument = argument;
         this.hashMap = hashMap;
     }
-    public Container(boolean error, String string){
+    public Container(boolean error, String argument){
         this.error = error;
-        this.argument = string;
+        this.argument = argument;
     }
     public Container(boolean error, String argument, HashMap<Integer, Vehicle> hashMap){
         this.error = error;

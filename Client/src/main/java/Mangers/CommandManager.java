@@ -5,7 +5,7 @@ import Commands.*;
 import java.util.HashMap;
 
 public class CommandManager {
-    public static HashMap<String, Command> commands = new HashMap<String, Command>();
+    public static HashMap<String, Command> commands = new HashMap<>();
 
     static{
         commands.put("help", new Help());
@@ -22,7 +22,7 @@ public class CommandManager {
         commands.put("remove_all_by_capacity", new RemoveAllByCapacity());
         commands.put("filter_less_than_engine_power", new FilterLessThanEnginePower());
         commands.put("execute_script", new ExecuteScript());
-        commands.put("exit", new Save());
+        commands.put("exit", new Exit());
     }
     public CommandManager() {
         commands.put("help", new Help());
@@ -44,8 +44,8 @@ public class CommandManager {
     }
     public static boolean isArgumentExists(String name){
         return switch (name) {
-            case "help", "info", "show", "clear", "exit", "average_of_engine_power" -> false;
-            case "insert", "update", "remove_key", "execute_script", "remove_greater", "replase_if_greater", "remove_greater_key", "remove_all_by_capacity", "filter_less_than_engine_power" ->
+            case "help", "info", "show", "clear", "exit", "average_of_engine_power", "remove_greater" -> false;
+            case "insert", "update", "remove_key", "execute_script", "replace_if_greater", "remove_greater_key", "remove_all_by_capacity", "filter_less_than_engine_power" ->
                     true;
             default -> throw new IllegalArgumentException();
         };
